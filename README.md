@@ -59,3 +59,31 @@ removebg photo.jpg --only-mask
 
 입력: `.jpg .jpeg .png .webp .bmp .tiff .tif`
 출력: 기본 `.png` (투명도 유지). 확장자가 `.jpg`/`.jpeg`이면 흰 배경 위에 합성해 저장.
+
+## 삭제
+
+패키지 제거:
+
+```bash
+pip uninstall removebg
+```
+
+의존성(`rembg`, `onnxruntime`, `Pillow`, `click` 등)까지 같이 지우려면:
+
+```bash
+pip uninstall removebg rembg onnxruntime Pillow click
+```
+
+> GPU 버전을 설치했다면 `onnxruntime` 대신 `onnxruntime-gpu`를 지정하세요.
+
+`rembg`가 처음 실행될 때 모델 파일을 `~/.u2net/`에 캐시합니다. 모델 가중치도 함께 정리하려면:
+
+```bash
+rm -rf ~/.u2net
+```
+
+소스까지 완전히 제거하려면 클론한 디렉토리를 삭제합니다:
+
+```bash
+rm -rf /path/to/removebg
+```
