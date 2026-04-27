@@ -111,6 +111,16 @@ process_file(
 
 ## 설치
 
+### Homebrew (macOS / Linux)
+
+```bash
+brew install soohanpark/tap/removebg
+```
+
+업그레이드는 `brew upgrade removebg`. Formula는 [`soohanpark/homebrew-tap`](https://github.com/soohanpark/homebrew-tap)에서 호스팅하며, 이 리포의 [`packaging/homebrew/`](packaging/homebrew/)에서 관리됩니다.
+
+### pip (소스 체크아웃)
+
 ```bash
 pip install -e .
 ```
