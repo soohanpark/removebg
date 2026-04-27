@@ -20,27 +20,22 @@ packaging/homebrew/
 
 다음 작업은 모두 메인테이너(저장소 소유자)가 직접 수행합니다.
 
-### 1. 이 리포(`soohanpark/removebg`)에서 태그·릴리즈 만들기
+### 1. 이 리포(`soohanpark/removebg`)에서 태그 푸시
 
-`pyproject.toml`의 `version`과 일치하는 git 태그를 생성하고 GitHub Release를 만듭니다.
+`pyproject.toml`의 `version`과 일치하는 git 태그를 생성해 푸시합니다.
 
 ```bash
 git tag v0.1.0
 git push origin v0.1.0
 ```
 
-GitHub UI(또는 `gh release create v0.1.0`)로 Release를 생성하면 다음 tarball이 노출됩니다.
+`v*` 패턴의 태그가 푸시되면 [`.github/workflows/release.yml`](../../.github/workflows/release.yml)이 자동으로 다음을 수행합니다.
 
-```
-https://github.com/soohanpark/removebg/archive/refs/tags/v0.1.0.tar.gz
-```
+- `pyproject.toml`의 `version`과 태그가 일치하는지 검증.
+- 소스 tarball(`https://github.com/soohanpark/removebg/archive/refs/tags/<tag>.tar.gz`)의 sha256 계산.
+- GitHub Release 생성 + 자동 생성 changelog + Formula에 그대로 붙여 넣을 `url` / `sha256` 스니펫을 릴리즈 노트에 포함.
 
-이 tarball의 sha256을 계산해 둡니다.
-
-```bash
-curl -sL https://github.com/soohanpark/removebg/archive/refs/tags/v0.1.0.tar.gz \
-  | shasum -a 256
-```
+릴리즈 페이지의 "Homebrew Formula update" 섹션에서 `url`과 `sha256` 두 줄을 복사해 다음 단계에서 사용합니다.
 
 ### 2. Formula 갱신
 

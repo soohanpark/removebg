@@ -1,0 +1,81 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify tag matches pyproject version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg=$(grep -E '^version[[:space:]]*=' pyproject.toml | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
+          if [ "$tag" != "$pkg" ]; then
+            echo "::error::tag v$tag does not match pyproject version $pkg"
+            exit 1
+          fi
+
+      - name: Compute source tarball sha256
+        id: sha
+        run: |
+          url="https://github.com/${GITHUB_REPOSITORY}/archive/refs/tags/${GITHUB_REF_NAME}.tar.gz"
+          # The tag tarball is generated on-demand by GitHub. Wait briefly,
+          # then download and hash it so the Homebrew formula can be updated
+          # without a manual shasum step.
+          for i in 1 2 3 4 5; do
+            if curl -fsSL "$url" -o /tmp/src.tar.gz; then break; fi
+            sleep $((i * 2))
+          done
+          sha=$(sha256sum /tmp/src.tar.gz | awk '{print $1}')
+          {
+            echo "url=$url"
+            echo "sha256=$sha"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build release notes
+        id: notes
+        run: |
+          {
+            echo 'body<<EOF'
+            echo "## Install"
+            echo
+            echo '```bash'
+            echo "brew install soohanpark/tap/removebg"
+            echo '```'
+            echo
+            echo "## Homebrew Formula update"
+            echo
+            echo "Update \`Formula/removebg.rb\` in [\`soohanpark/homebrew-tap\`](https://github.com/soohanpark/homebrew-tap) with:"
+            echo
+            echo '```ruby'
+            echo "  url \"${{ steps.sha.outputs.url }}\""
+            echo "  sha256 \"${{ steps.sha.outputs.sha256 }}\""
+            echo '```'
+            echo
+            echo "Then regenerate resource pins:"
+            echo
+            echo '```bash'
+            echo "./packaging/homebrew/generate-resources.sh"
+            echo '```'
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: ${{ steps.notes.outputs.body }}
+          generate_release_notes: true
+          fail_on_unmatched_files: false
