@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Regenerate the Homebrew `resource` blocks for the removebg formula.
 #
-# Output goes to stdout AND is spliced into Formula/removebg.rb between the
-# BEGIN_RESOURCES / END_RESOURCES markers.
+# Spliced into Formula/removebg.rb between the BEGIN_RESOURCES /
+# END_RESOURCES markers.
 #
 # Requirements:
 #   - python3 (3.9+)
@@ -16,7 +16,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-FORMULA="$REPO_ROOT/packaging/homebrew/Formula/removebg.rb"
+HERE="$REPO_ROOT/packaging/homebrew"
+FORMULA="$HERE/Formula/removebg.rb"
 WORKDIR="$(mktemp -d)"
 trap 'rm -rf "$WORKDIR"' EXIT
 
@@ -25,16 +26,11 @@ python3 -m venv "$WORKDIR/venv"
 source "$WORKDIR/venv/bin/activate"
 
 pip install --quiet --upgrade pip
-# homebrew-pypi-poet imports pkg_resources, which now ships with setuptools
-# (no longer bundled in venvs on Python 3.12+).
-pip install --quiet setuptools
-pip install --quiet homebrew-pypi-poet
+# `packaging` provides Requirement/marker parsing for collect_resources.py.
+pip install --quiet packaging
 pip install --quiet "$REPO_ROOT"
 
-# `poet -f removebg` emits a class skeleton. We only want the `resource` blocks.
-poet -f removebg \
-  | awk '/^  resource /{flag=1} flag{print} /^  end$/ && flag{flag=0; print ""}' \
-  > "$WORKDIR/resources.rb"
+python3 "$HERE/collect_resources.py" > "$WORKDIR/resources.rb"
 
 echo "--- generated resources ---"
 cat "$WORKDIR/resources.rb"
@@ -50,8 +46,7 @@ begin = "  # BEGIN_RESOURCES\n"
 end = "  # END_RESOURCES\n"
 i = formula.index(begin) + len(begin)
 j = formula.index(end)
-indented = "".join("  " + line if line.strip() else line for line in resources.splitlines(keepends=True))
-formula_path.write_text(formula[:i] + indented + formula[j:])
+formula_path.write_text(formula[:i] + resources + formula[j:])
 print(f"updated {formula_path}")
 PY
 
