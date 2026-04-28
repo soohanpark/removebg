@@ -111,25 +111,41 @@ process_file(
 
 ## 설치
 
-### Homebrew (macOS / Linux)
+### pipx (권장)
+
+격리된 환경에 CLI로 설치합니다. 의존성(numba/llvmlite/onnxruntime/opencv 등)은 모두 PyPI 휠로 들어와 빌드 단계가 없습니다.
 
 ```bash
-brew install soohanpark/tap/removebg
+brew install pipx   # macOS. Linux는 패키지 매니저 또는 `python -m pip install --user pipx`
+pipx ensurepath
+pipx install removebg
 ```
 
-업그레이드는 `brew upgrade removebg`. Formula는 [`soohanpark/homebrew-tap`](https://github.com/soohanpark/homebrew-tap)에서 호스팅하며, 이 리포의 [`packaging/homebrew/`](packaging/homebrew/)에서 관리됩니다.
+업그레이드는 `pipx upgrade removebg`, 제거는 `pipx uninstall removebg`.
 
-### pip (소스 체크아웃)
+### pip
 
 ```bash
-pip install -e .
+pip install removebg
 ```
 
 GPU(ONNX Runtime CUDA)를 쓰려면:
 
 ```bash
+pip install 'removebg[gpu]'
+```
+
+### 소스 체크아웃 (개발용)
+
+```bash
+pip install -e .
+# 또는 GPU
 pip install -e '.[gpu]'
 ```
+
+### Homebrew (실험적, 미지원)
+
+`packaging/homebrew/`에 Formula 골격이 준비되어 있으나 numba/llvmlite/onnxruntime 빌드 이슈로 현재 안정적으로 동작하지 않습니다. 향후 homebrew-core 승격 시 다시 검토 예정입니다. 그동안은 위 pipx 경로를 이용해 주세요.
 
 ## 사용법
 

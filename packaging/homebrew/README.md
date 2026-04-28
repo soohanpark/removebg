@@ -1,6 +1,8 @@
-# Homebrew 패키징 (`removebg`)
+# Homebrew 패키징 (`removebg`) — **현재 미지원, 추후 검토**
 
-이 디렉토리는 [`soohanpark/homebrew-tap`](https://github.com/soohanpark/homebrew-tap) 리포에 그대로 복사할 산출물을 보관합니다. 사용자에게는 다음 한 줄로 노출됩니다.
+> **현재 상태**: numba/llvmlite/onnxruntime/opencv 등 ML 의존성이 Homebrew의 source-build 모델과 잘 맞지 않아 안정적인 설치가 불가합니다. 사용자 설치 경로는 PyPI + pipx (`pipx install removebg`)로 일원화했습니다. 이 디렉토리의 산출물은 향후 homebrew-core 승격 시도(스타·포크 기준 충족 후) 또는 wheel 기반 Formula 재작성 시 재활용을 위해 보관합니다.
+
+이 디렉토리는 [`soohanpark/homebrew-tap`](https://github.com/soohanpark/homebrew-tap) 리포에 그대로 복사할 산출물을 보관합니다. (활성화되면) 사용자에게는 다음 한 줄로 노출됩니다.
 
 ```bash
 brew install soohanpark/tap/removebg
