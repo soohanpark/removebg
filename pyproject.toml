@@ -9,13 +9,35 @@ description = "A simple CLI tool that removes backgrounds from images using remb
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-authors = [{ name = "removebg" }]
+authors = [{ name = "Soohan Park" }]
+keywords = ["background-removal", "rembg", "image-processing", "u2net", "birefnet", "cli"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
 dependencies = [
     "click>=8.1",
     "rembg>=2.0.50",
     "Pillow>=10.0",
     "onnxruntime>=1.16",
 ]
+
+[project.urls]
+Homepage = "https://github.com/soohanpark/removebg"
+Repository = "https://github.com/soohanpark/removebg"
+Issues = "https://github.com/soohanpark/removebg/issues"
 
 [project.optional-dependencies]
 gpu = ["onnxruntime-gpu>=1.16"]
