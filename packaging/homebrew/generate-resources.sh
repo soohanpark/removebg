@@ -25,6 +25,9 @@ python3 -m venv "$WORKDIR/venv"
 source "$WORKDIR/venv/bin/activate"
 
 pip install --quiet --upgrade pip
+# homebrew-pypi-poet imports pkg_resources, which now ships with setuptools
+# (no longer bundled in venvs on Python 3.12+).
+pip install --quiet setuptools
 pip install --quiet homebrew-pypi-poet
 pip install --quiet "$REPO_ROOT"
 
