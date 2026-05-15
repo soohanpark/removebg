@@ -45,7 +45,7 @@ Common types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `build`, `ci`,
 
 ### Code style
 
-- Python ≥ 3.9 compatible (the project supports 3.9 – 3.13).
+- Python ≥ 3.11 compatible (the project supports 3.11 – 3.13).
 - Keep functions small and focused. Match the surrounding style.
 - Don't introduce abstractions for hypothetical future requirements.
 

@@ -1,7 +1,7 @@
 # nobg
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.9%E2%80%933.13-blue.svg)](pyproject.toml)
+[![Python](https://img.shields.io/badge/python-3.11%E2%80%933.13-blue.svg)](pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg)](#requirements)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
@@ -80,7 +80,7 @@ uv tool uninstall nobg
 
 - Internet access on first run (model weights are cached under `~/.u2net/`).
 - ~2 GB of free disk space (models + dependencies).
-- Python ≥ 3.9 (you don't need it installed — `uv` will fetch one).
+- Python ≥ 3.11 (you don't need it installed — `uv` will fetch one).
 - macOS, Linux, or Windows. On Windows, install `uv` via PowerShell with
   `irm https://astral.sh/uv/install.ps1 | iex`, then use the `uv tool install ...` command above.
 

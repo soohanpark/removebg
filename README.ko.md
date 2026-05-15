@@ -71,7 +71,7 @@ uv tool uninstall nobg
 
 - 인터넷 (최초 실행 시 `~/.u2net/`로 모델 가중치 다운로드)
 - 디스크 여유 공간 약 2GB (모델 + 의존성)
-- Python ≥ 3.9 (`uv`가 알아서 받아오므로 사전 설치 불필요)
+- Python ≥ 3.11 (`uv`가 알아서 받아오므로 사전 설치 불필요)
 - OS: Linux / macOS / Windows (Windows는 PowerShell에서 `irm https://astral.sh/uv/install.ps1 | iex`로 uv 설치 후 위 `uv tool install ...` 명령 사용)
 
 ## 사용법

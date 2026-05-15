@@ -15,9 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `LICENSE` (MIT), `CONTRIBUTING.md`, `CHANGELOG.md`, GitHub issue and pull-request
   templates.
 - `nobg --version` flag (`click.version_option`, sourced from package metadata).
-- Test job in the release workflow: `pytest` runs against Python 3.9 – 3.13 on
-  every `v*` tag push. The build / PyPI publish / GitHub Release jobs now run
-  only after tests pass.
+- Test job in the release workflow: `pytest` runs against Python 3.11 – 3.13
+  on every `v*` tag push. The build / PyPI publish / GitHub Release jobs now
+  run only after tests pass.
+
+### Removed
+- Python 3.9 and 3.10 support. The transitive `onnxruntime` dependency
+  stopped publishing wheels for those versions (v1.24.x ships `cp311+` only).
+  `requires-python` is now `>=3.11` and the matching classifiers are gone.
 
 ### Changed
 - **Version is now derived from the git tag** via `setuptools-scm`. The
