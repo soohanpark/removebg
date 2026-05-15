@@ -2,8 +2,8 @@ from pathlib import Path
 
 from click.testing import CliRunner
 
-from removebg.cli import main
-from removebg.core import iter_images, resolve_output_path
+from nobg.cli import main
+from nobg.core import iter_images, resolve_output_path
 
 
 def test_help_shows_usage():

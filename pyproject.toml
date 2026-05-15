@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "removebg"
+name = "nobg"
 version = "0.1.0"
 description = "A simple CLI tool that removes backgrounds from images using rembg (U^2-Net)."
 readme = "README.md"
@@ -35,16 +35,16 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/soohanpark/removebg"
-Repository = "https://github.com/soohanpark/removebg"
-Issues = "https://github.com/soohanpark/removebg/issues"
+Homepage = "https://github.com/soohanpark/nobg"
+Repository = "https://github.com/soohanpark/nobg"
+Issues = "https://github.com/soohanpark/nobg/issues"
 
 [project.optional-dependencies]
 gpu = ["onnxruntime-gpu>=1.16"]
 dev = ["pytest>=7"]
 
 [project.scripts]
-removebg = "removebg.cli:main"
+nobg = "nobg.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

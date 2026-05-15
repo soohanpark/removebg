@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/removebg
+      url: https://pypi.org/p/nobg
     permissions:
       id-token: write
     steps:
@@ -78,20 +78,6 @@ jobs:
           name: dist
           path: dist
 
-      - name: Compute source tarball sha256 (for Homebrew tap)
-        id: sha
-        run: |
-          url="https://github.com/${GITHUB_REPOSITORY}/archive/refs/tags/${GITHUB_REF_NAME}.tar.gz"
-          for i in 1 2 3 4 5; do
-            if curl -fsSL "$url" -o /tmp/src.tar.gz; then break; fi
-            sleep $((i * 2))
-          done
-          sha=$(sha256sum /tmp/src.tar.gz | awk '{print $1}')
-          {
-            echo "url=$url"
-            echo "sha256=$sha"
-          } >> "$GITHUB_OUTPUT"
-
       - name: Build release notes
         id: notes
         run: |
@@ -100,24 +86,14 @@ jobs:
             echo "## Install"
             echo
             echo '```bash'
-            echo "pipx install removebg==${GITHUB_REF_NAME#v}"
+            echo "uv tool install nobg==${GITHUB_REF_NAME#v}"
             echo '```'
             echo
-            echo "or via plain pip:"
+            echo "or via pipx:"
             echo
             echo '```bash'
-            echo "pip install removebg==${GITHUB_REF_NAME#v}"
+            echo "pipx install nobg==${GITHUB_REF_NAME#v}"
             echo '```'
-            echo
-            echo "## Homebrew tap (alternative, parked)"
-            echo
-            echo "If you maintain the Homebrew tap, update \`Formula/removebg.rb\` with:"
-            echo
-            echo '```ruby'
-            echo "  url \"${{ steps.sha.outputs.url }}\""
-            echo "  sha256 \"${{ steps.sha.outputs.sha256 }}\""
-            echo '```'
-            echo "then run \`./packaging/homebrew/generate-resources.sh\`."
             echo EOF
           } >> "$GITHUB_OUTPUT"
 
