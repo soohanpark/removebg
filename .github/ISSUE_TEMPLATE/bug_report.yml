@@ -1,0 +1,86 @@
+name: Bug report
+description: Something is broken or behaves incorrectly.
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the bug.
+      placeholder: When I run `nobg ...`, I get ...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How can we reproduce it?
+      description: Exact command(s) and inputs. Attach a minimal sample image if relevant.
+      render: bash
+      placeholder: |
+        nobg path/to/image.jpg -m u2net
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen instead?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / error output
+      description: The full error message or stack trace, if any.
+      render: text
+  - type: input
+    id: nobg-version
+    attributes:
+      label: nobg version
+      description: Output of `nobg --version`.
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: python-version
+    attributes:
+      label: Python version
+      description: Output of `python --version` (or the version `uv` chose).
+      placeholder: 3.12.3
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other (specify in description)
+    validations:
+      required: true
+  - type: dropdown
+    id: install-method
+    attributes:
+      label: How did you install nobg?
+      options:
+        - One-liner installer (curl ... install.sh)
+        - uv tool install
+        - uvx
+        - pipx
+        - pip in a venv
+        - From source (uv sync)
+        - Other (specify in description)
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: I tried with the latest `main` (`uv tool upgrade nobg` or re-running the installer).
+          required: false

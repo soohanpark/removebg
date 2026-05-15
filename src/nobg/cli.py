@@ -45,6 +45,7 @@ def _parse_bgcolor(value: str | None) -> tuple[int, int, int, int] | None:
 
 
 @click.command(context_settings={"help_option_names": ["-h", "--help"]})
+@click.version_option(package_name="nobg", prog_name="nobg")
 @click.argument(
     "input_path",
     type=click.Path(exists=True, path_type=Path, readable=True),

@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=68", "setuptools-scm>=8", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "nobg"
-version = "0.1.0"
+dynamic = ["version"]
 description = "A simple CLI tool that removes backgrounds from images using rembg (U^2-Net)."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -51,3 +51,8 @@ where = ["src"]
 
 [tool.setuptools.package-dir]
 "" = "src"
+
+[tool.setuptools_scm]
+# Version is derived from the git tag (e.g. v0.2.0 -> 0.2.0). Builds from a
+# non-tagged commit get a PEP 440 dev version like 0.2.1.dev3+g<sha>.
+fallback_version = "0.0.0+unknown"

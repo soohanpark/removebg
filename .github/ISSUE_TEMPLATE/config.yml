@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or discussion
+    url: https://github.com/soohanpark/nobg/discussions
+    about: For usage questions and open-ended discussion, please open a Discussion instead of an issue.
+  - name: rembg upstream
+    url: https://github.com/danielgatis/rembg/issues
+    about: nobg is a thin wrapper around rembg. Model accuracy and core segmentation issues may belong upstream.

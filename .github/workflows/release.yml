@@ -9,23 +9,49 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # setuptools-scm needs full history + tags to compute the version
+          # during the editable install performed by `uv sync`.
+          fetch-depth: 0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Install Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: uv sync --extra dev --python ${{ matrix.python-version }}
+
+      - name: Run pytest
+        run: uv run --python ${{ matrix.python-version }} pytest -q
+
+      - name: Smoke-test CLI
+        run: uv run --python ${{ matrix.python-version }} nobg --version
+
   build:
     name: Build sdist + wheel
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          # setuptools-scm derives the version from the git tag, so we need
+          # full history and tags.
           fetch-depth: 0
-
-      - name: Verify tag matches pyproject version
-        run: |
-          tag="${GITHUB_REF_NAME#v}"
-          pkg=$(grep -E '^version[[:space:]]*=' pyproject.toml | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
-          if [ "$tag" != "$pkg" ]; then
-            echo "::error::tag v$tag does not match pyproject version $pkg"
-            exit 1
-          fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -36,6 +62,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip build
           python -m build
+
+      - name: Verify built version matches tag
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          wheel=$(ls dist/nobg-*.whl | head -1)
+          built=$(basename "$wheel" | sed -E 's/^nobg-([^-]+)-.*/\1/')
+          if [ "$tag" != "$built" ]; then
+            echo "::error::tag v$tag does not match built wheel version $built. Did setuptools-scm pick up an unexpected commit?"
+            exit 1
+          fi
 
       - name: Upload dist artifact
         uses: actions/upload-artifact@v4
@@ -85,14 +121,17 @@ jobs:
             echo 'body<<EOF'
             echo "## Install"
             echo
+            echo "From GitHub (works immediately):"
+            echo
             echo '```bash'
-            echo "uv tool install nobg==${GITHUB_REF_NAME#v}"
+            echo "uv tool install git+https://github.com/${GITHUB_REPOSITORY}.git@${GITHUB_REF_NAME}"
             echo '```'
             echo
-            echo "or via pipx:"
+            echo "From PyPI (after the \`pypi\` job succeeds):"
             echo
             echo '```bash'
-            echo "pipx install nobg==${GITHUB_REF_NAME#v}"
+            echo "uv tool install nobg==${GITHUB_REF_NAME#v}"
+            echo "# or: pipx install nobg==${GITHUB_REF_NAME#v}"
             echo '```'
             echo EOF
           } >> "$GITHUB_OUTPUT"
