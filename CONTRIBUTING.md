@@ -51,11 +51,19 @@ Common types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `build`, `ci`,
 
 ## Releasing (maintainers)
 
-1. Bump `version` in `pyproject.toml` and move the `## [Unreleased]` section in
-   `CHANGELOG.md` under a new `## [X.Y.Z] - YYYY-MM-DD` heading.
-2. Commit, tag (`git tag vX.Y.Z`), and push the tag.
-3. The `Release` workflow builds the sdist + wheel, publishes to PyPI via
-   Trusted Publishing, and attaches the artifacts to a GitHub Release.
+The package version is derived from the git tag via `setuptools-scm`, so the
+release flow is just:
+
+1. Move the `## [Unreleased]` section in `CHANGELOG.md` under a new
+   `## [X.Y.Z] - YYYY-MM-DD` heading; commit.
+2. `git tag vX.Y.Z && git push origin main vX.Y.Z`.
+3. The `Release` workflow runs the test matrix, builds the sdist + wheel
+   (versioned `X.Y.Z` via `setuptools-scm`), and attaches both to a new
+   GitHub Release.
+
+PyPI publishing is intentionally not wired up. If we ever want it, add a
+`pypi` job to `.github/workflows/release.yml` and register a Trusted
+Publisher on PyPI for this repo.
 
 ## Code of conduct
 

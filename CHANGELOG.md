@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Python 3.9 and 3.10 support. The transitive `onnxruntime` dependency
   stopped publishing wheels for those versions (v1.24.x ships `cp311+` only).
   `requires-python` is now `>=3.11` and the matching classifiers are gone.
+- PyPI publish job from the release workflow. The project is distributed via
+  `git+https://github.com/soohanpark/nobg.git[@vX.Y.Z]`; the workflow no
+  longer requires a Trusted Publisher setup. Re-add the job if/when PyPI
+  distribution is wanted.
 
 ### Changed
 - **Version is now derived from the git tag** via `setuptools-scm`. The
